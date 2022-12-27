@@ -5,27 +5,42 @@ public class Subtask extends Task {
     private String whoIsEpic;
     private int idEpic;
 
-    public Subtask(int id, String name, String description, Status status, String whoIsEpic, int idEpic) {
-        super(id, name, description, status);
+    public Subtask(String name, String description, String whoIsEpic) {
+        super(name, description);
         this.whoIsEpic = whoIsEpic;
-        this.idEpic = idEpic;
     }
 
 
     public String getWhoIsEpic() {
+
         return whoIsEpic;
     }
 
     public void setWhoIsEpic(String whoIsEpic) {
+
         this.whoIsEpic = whoIsEpic;
     }
 
     public int getIdEpic() {
+
         return idEpic;
     }
 
     public void setIdEpic(int idEpic) {
+
         this.idEpic = idEpic;
+    }
+
+    @Override
+    public String toString() {
+        return "Subtask{" +
+                "whoIsEpic='" + whoIsEpic + '\'' +
+                ", idEpic=" + idEpic +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 }
 

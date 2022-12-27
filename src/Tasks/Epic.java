@@ -2,9 +2,18 @@ package Tasks;
 import Manager.*;
 
 public class Epic extends Task {
-    public Epic(int id, String name, String description, Status status) {
-        super(id, name, description, status);
+    public Epic( String name, String description ) {
+        super(name, description);
     }
 
 
+    @Override
+    public String toString() {
+        return "Epic{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
