@@ -14,7 +14,8 @@ public class InMemoryTaskManager implements Manager {
         public static final HashMap<Integer, ArrayList<Integer>> epicSubtaskList = new HashMap<>();
 
 
-     InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+
+  HistoryManager historyManager = Managers.getDefaultHistory();
 
 
         int id = 1;
@@ -140,20 +141,20 @@ public class InMemoryTaskManager implements Manager {
         }
     @Override
     public Task getTaskById(int id){ // Просмотр таска. Я Сделал вывод информации через toString(), а не как выше, так как почему-то мне кажется именно, так и должно быть ¯\_(ツ)_/¯
-        inMemoryHistoryManager.addToHistoryList(taskList.get(id)); // Вызов метода добавления в историю.
+        historyManager.addToHistoryList(taskList.get(id)); // Вызов метода добавления в историю.
         System.out.println(taskList.get(id).toString());
         return taskList.get(id);
     }
     @Override
     public Task getEpicTaskById(int id){
-        inMemoryHistoryManager.addToHistoryList(epicTaskList.get(id));
+        historyManager.addToHistoryList(epicTaskList.get(id));
         System.out.println(epicTaskList.get(id).toString());
         return  epicTaskList.get(id);
 
     }
     @Override
     public Task getSubtaskById(int id){
-        inMemoryHistoryManager.addToHistoryList(subtaskList.get(id));
+        historyManager.addToHistoryList(subtaskList.get(id));
         System.out.println(subtaskList.get(id).toString());
         return  subtaskList.get(id);
 

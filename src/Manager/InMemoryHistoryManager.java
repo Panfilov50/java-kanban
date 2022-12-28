@@ -2,12 +2,13 @@ package Manager;
 
 import Tasks.Task;
 
-import java.util.ArrayList;
 
-public class InMemoryHistoryManager implements HistoryManager{ // Такс, дальше идет послденй, не обязательный пункта ТЗ, но решил пока попробовать, не суди строго)
+import java.util.LinkedList;
+
+public class InMemoryHistoryManager implements HistoryManager{ // Такс, дальше идет последний, не обязательный пункта ТЗ, но решил пока попробовать, не суди строго)
 
 
-    public static final ArrayList<Task> HistoryList = new ArrayList<>();
+    public static final LinkedList <Task> HistoryList = new LinkedList<>(); // Почитал про List'ы. Спасибо, буду иметь в виду)
 
 
 
@@ -22,11 +23,8 @@ public class InMemoryHistoryManager implements HistoryManager{ // Такс, да
         }
     }
     @Override
-    public void getHistory(){
-        //   System.out.println(HistoryList); // Первый вариант печати истории. Все идет в одну строчку и не призентабельно
-        for (Task i : HistoryList){
-            System.out.println(i);
-        }
+    public LinkedList<Task> getHistory(){   // Что то я тупанул, по названию метода должно было быть понятно что он должен делать)
+        return HistoryList;
     }
 
 }

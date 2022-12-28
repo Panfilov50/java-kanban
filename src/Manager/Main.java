@@ -61,7 +61,7 @@ public class Main {
 
         System.out.println(); //
 
-        inMemoryHistoryManager.getHistory();
+        System.out.println(inMemoryHistoryManager.getHistory());
 
 
 
