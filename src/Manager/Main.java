@@ -1,6 +1,3 @@
-// Привет! Далее, что бы не теряться будут комментарии только измененным/добавленным штукам
-
-
 package Manager;
 
 import Tasks.Epic;
@@ -9,59 +6,65 @@ import Tasks.Task;
 
 public class Main {
     public static void main(String[] args) {
-        InMemoryTaskManager manager = new InMemoryTaskManager();
-        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-
-
-        Task task = new Task("Task1","Description");  // Вынес добалвения тасков в мейн.
-        manager.addTask(task);  // В менеджер передаеться только имя и описание, там им присваиваеться ID и статус.
-        task = new Task("Захватить мир", "Мировое господство");
+        Manager manager = Managers.getDefault();
+ //создайте две задачи, эпик с тремя подзадачами и эпик без подзадач;
+        Task task = new Task("Task1","Description1");
         manager.addTask(task);
-        task = new Task("Излечить рак", "Найти лекарство от рака ");
+        task = new Task("Task2", "Description2");
+        manager.addTask(task);
+        task = new Task("Task3", "Description3");
         manager.addTask(task);
 
-        Epic epic = new Epic("Погладить кота", "Почесывать блоховоза до мурлыканья");
+
+        Epic epic = new Epic("Epic1", "Description1");
         manager.addEpicTusk(epic);
 
-        Subtask subtask = new Subtask("Найти кота", "Найти блоховоза по звукам <МЯУ>", "Погладить кота");
+        Subtask subtask = new Subtask("SubTask1", "Description1", "Epic1");
         manager.addSubtask(subtask);
-        subtask = new Subtask("Найти кота", "Найти блоховоза по звукам <МЯУ>", "Погладить кота");
+        subtask = new Subtask("SubTask2", "Description2", "Epic1");
         manager.addSubtask(subtask);
-        subtask = new Subtask("Гладить кота", "Причинять коту беспощадные ласки ", "Погладить кота");
+        subtask = new Subtask("SubTask3", "Description3", "Epic1");
         manager.addSubtask(subtask);
 
-        manager.changeStatusForNameTask("Найти кота", Status.valueOf("IN_PROGRESS"));
-
-        epic = new Epic("Погладить бегемота", "Рискнуть жизнью ради шанса потрогать пузатого ");
+        epic = new Epic("Epic2", "Description2");
         manager.addEpicTusk(epic);
-        subtask = new Subtask("Найти бегемота", "Загуглить данную услугу", "Погладить бегемота");
+
+        subtask = new Subtask("SubTask4", "Description1", "Epic2");
+        manager.addSubtask(subtask);
+        subtask = new Subtask("SubTask5", "Description2", "Epic2");
+        manager.addSubtask(subtask);
+        subtask = new Subtask("SubTask6", "Description3", "Epic3");
         manager.addSubtask(subtask);
 
-        System.out.println(manager.taskList);
-        System.out.println(manager.epicTaskList);
-        System.out.println(manager.subtaskList);
-        System.out.println(manager.epicSubtaskList.get(4));
-        System.out.println(manager.epicSubtaskList.get(6));
-        System.out.println(manager.epicTaskList.get(4).getStatus());
-        manager.changeStatusForNameTask("Найти кота", Status.valueOf("DONE"));
-        manager.changeStatusForNameTask("Гладить кота", Status.valueOf("DONE"));
-        System.out.println(manager.epicTaskList.get(4).getStatus());
-        manager.getAllTask();
-        manager.removeTask(1);
-        System.out.println(manager.taskList);
-        manager.removeTask(5);
-        manager.getAllTask();
+        epic = new Epic("Epic3", "Description3");
+        manager.addEpicTusk(epic);
 
         System.out.println();
         System.out.println();
-
-        manager.getTaskById(2); // Вызов просмотра таска по ИД с последующей записью в историю
+//запросите созданные задачи несколько раз в разном порядке;
+        manager.getTaskById(1);
+        manager.getEpicTaskById(4);
+        manager.getSubtaskById(5);
+        manager.getSubtaskById(6);
+        manager.getSubtaskById(7);
         manager.getEpicTaskById(8);
-        manager.getSubtaskById(9);
+        manager.getTaskById(2);
+        manager.getSubtaskById(5);
+        manager.getTaskById(1);
 
-        System.out.println(); //
+        System.out.println();
+        System.out.println();
+//после каждого запроса выведите историю и убедитесь, что в ней нет повторов;
+        System.out.println(manager.getHistory());
+        System.out.println();
+        System.out.println();
+//удалите задачу, которая есть в истории, и проверьте, что при печати она не будет выводиться;
+        manager.removeTask(1);
+//удалите эпик с тремя подзадачами и убедитесь, что из истории удалился как сам эпик, так и все его подзадачи.
+        manager.removeTask(4);
 
-        System.out.println(inMemoryHistoryManager.getHistory());
+        System.out.println(manager.getHistory());
+
 
 
 

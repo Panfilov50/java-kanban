@@ -9,11 +9,10 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "Эпик: " +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+                ", status=" + status;
     }
 }

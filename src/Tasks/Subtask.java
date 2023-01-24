@@ -10,7 +10,6 @@ public class Subtask extends Task {
         this.whoIsEpic = whoIsEpic;
     }
 
-
     public String getWhoIsEpic() {
 
         return whoIsEpic;
@@ -33,14 +32,13 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "Подзадача: " +
+                "id=" + id +
+                ", Имя='" + name + '\'' +
+                ", Описание='" + description + '\'' +
                 "whoIsEpic='" + whoIsEpic + '\'' +
                 ", idEpic=" + idEpic +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+                ", status=" + status;
     }
 }
 

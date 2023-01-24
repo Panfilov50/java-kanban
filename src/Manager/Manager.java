@@ -3,9 +3,9 @@ package Manager;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
+import java.util.List;
 
-public interface Manager {  // Тут согласно ТЗ создал интерфейс
-
+public interface Manager {
     void addTask(Task task);
     void addEpicTusk(Epic epic);
     void addSubtask(Subtask subtask);
@@ -19,11 +19,7 @@ public interface Manager {  // Тут согласно ТЗ создал инт�
     Task getTaskById(int id);
     Task getEpicTaskById(int id);
     Task getSubtaskById(int id);
-
-
-
-
-
+    List<Task> getHistory();
 }
 
 

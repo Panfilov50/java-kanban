@@ -2,29 +2,92 @@ package Manager;
 
 import Tasks.Task;
 
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
-
-public class InMemoryHistoryManager implements HistoryManager{ // Такс, дальше идет последний, не обязательный пункта ТЗ, но решил пока попробовать, не суди строго)
-
-
-    public static final LinkedList <Task> HistoryList = new LinkedList<>(); // Почитал про List'ы. Спасибо, буду иметь в виду)
+import java.util.List;
 
 
+public class InMemoryHistoryManager implements HistoryManager {
+    private final HashMap<Integer, Node<Task>> HistoryMap = new HashMap<>();
+    private Node<Task> head;
+    private Node<Task> tail;
 
     @Override
-    public void addToHistoryList(Task task){ // Метод проверяет меньше ли в листе 10 объектов, и если больше то удаляет 0 индекс и записывает новый объект.
-        if (HistoryList.size() <= 10){
-            HistoryList.add(task);
-        }else {
-            HistoryList.remove(0);
-            HistoryList.add(task);
-
+    public void addHistoryList(Task task) {
+        if (task == null) {
+            return;
         }
+        final Node<Task> node = HistoryMap.get(task.getId());
+        if (node != null) {
+            removeNode(node);
+        }
+        linkLast(task);
+    }
+
+    @Override
+    public void removeHistoryTask(int id) {
+        removeNode(HistoryMap.get(id));
+        HistoryMap.remove(id);
     }
     @Override
-    public LinkedList<Task> getHistory(){   // Что то я тупанул, по названию метода должно было быть понятно что он должен делать)
+    public List<Task> getHistory() {
+
+        return getTasks();
+    }
+
+    public void linkLast(Task task) {
+        Node<Task> oldTail = tail;
+        Node<Task> newNode = new Node<Task>(oldTail, task, null);
+        tail = newNode;
+        HistoryMap.put(task.getId(), newNode);
+        if (oldTail == null) {
+            head = newNode;
+        } else {
+            oldTail.next = newNode;
+        }
+    }
+
+    private List<Task> getTasks() {
+        List<Task> HistoryList = new ArrayList<>();
+        Node<Task> node = head;
+        while (node != null) {
+            HistoryList.add(node.data);
+            node = node.next;
+        }
         return HistoryList;
     }
 
+    public void removeNode(Node<Task> node) {
+        if (!(node == null)) {
+            node.data = null;
+
+            if (head == node && tail == node) {
+                head = null;
+                tail = null;
+
+            } else if (head == node) {
+                head = node.next;
+                head.prev = null;
+
+            } else if (tail == node) {
+                tail = node.prev;
+                tail.next = null;
+
+            } else {
+                node.prev.next = node.next;
+                node.next.prev = node.prev;
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+

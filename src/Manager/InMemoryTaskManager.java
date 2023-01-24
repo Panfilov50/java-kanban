@@ -3,9 +3,9 @@ package Manager;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements Manager {
         public static final HashMap<Integer, Task> taskList = new HashMap<>();
@@ -13,10 +13,7 @@ public class InMemoryTaskManager implements Manager {
         public static final HashMap<Integer, Task> subtaskList = new HashMap<>();
         public static final HashMap<Integer, ArrayList<Integer>> epicSubtaskList = new HashMap<>();
 
-
-
   HistoryManager historyManager = Managers.getDefaultHistory();
-
 
         int id = 1;
 
@@ -73,7 +70,7 @@ public class InMemoryTaskManager implements Manager {
                 }
             }
             for (int i : epicTaskList.keySet())
-                checkEpicStatus(i);  // Метод проверки статуса эпика, после смены какого-либо таска
+                checkEpicStatus(i);
         }
     @Override
     public void checkEpicStatus(int id) {
@@ -96,13 +93,13 @@ public class InMemoryTaskManager implements Manager {
             }
         }
     @Override
-    public void getAllTask () {  // Думаю надо ли избавиться от этого метода ?
+    public void getAllTask () {
             System.out.println("На данный момент перед нами стоят следующие задачи: ");
             getTask();
             getEpicTask();
         }
     @Override
-    public void getTask () { //Нужно ли добавить чтение истории при вызове просмотра всех тасков?
+    public void getTask () {
             for (int i : taskList.keySet()) {
                 System.out.println("Задача: " + taskList.get(i).getName() + ". Описание: " + taskList.get(i).getDescription());
             }
@@ -120,18 +117,29 @@ public class InMemoryTaskManager implements Manager {
         }
     @Override
     public void removeTask(int id) {
+        if (epicSubtaskList.containsKey(id)) {
+            for (int j : epicSubtaskList.get(id)) {
+                historyManager.removeHistoryTask(j);
+            }
+        }
             taskList.remove(id);
             epicTaskList.remove(id);
             epicSubtaskList.remove(id);
             subtaskList.remove(id);
-
+            historyManager.removeHistoryTask(id);
             for (int i : epicSubtaskList.keySet()) {
                 if(epicSubtaskList.get(i).contains(id)) {
+                    historyManager.removeHistoryTask(i);
                     epicSubtaskList.get(i).remove((Integer)id);
-
                 }
             }
+
+
         }
+
+    public void removeSubtasks (Subtask subtask) {
+
+    }
     @Override
     public void removeAllTask() {
             taskList.clear();
@@ -140,24 +148,32 @@ public class InMemoryTaskManager implements Manager {
             epicSubtaskList.clear();
         }
     @Override
-    public Task getTaskById(int id){ // Просмотр таска. Я Сделал вывод информации через toString(), а не как выше, так как почему-то мне кажется именно, так и должно быть ¯\_(ツ)_/¯
-        historyManager.addToHistoryList(taskList.get(id)); // Вызов метода добавления в историю.
+    public Task getTaskById(int id){
+       historyManager.addHistoryList(taskList.get(id));
         System.out.println(taskList.get(id).toString());
+     //   Task task = taskList.getOrDefault(id, null);
+     //   historyManager.addHistoryList(task);
+
         return taskList.get(id);
     }
     @Override
     public Task getEpicTaskById(int id){
-        historyManager.addToHistoryList(epicTaskList.get(id));
+        historyManager.addHistoryList(epicTaskList.get(id));
         System.out.println(epicTaskList.get(id).toString());
         return  epicTaskList.get(id);
 
     }
     @Override
     public Task getSubtaskById(int id){
-        historyManager.addToHistoryList(subtaskList.get(id));
+        historyManager.addHistoryList(subtaskList.get(id));
         System.out.println(subtaskList.get(id).toString());
         return  subtaskList.get(id);
 
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
 }
