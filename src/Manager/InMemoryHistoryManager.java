@@ -10,8 +10,9 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final HashMap<Integer, Node<Task>> HistoryMap = new HashMap<>();
-    private Node<Task> head;
-    private Node<Task> tail;
+    CustomLinkedList customLinkedList = new CustomLinkedList();
+  //  private Node<Task> head;
+  //  private Node<Task> tail;
 
     @Override
     public void addHistoryList(Task task) {
@@ -37,12 +38,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public void linkLast(Task task) {
-        Node<Task> oldTail = tail;
+        Node<Task> oldTail = customLinkedList.getTail();
         Node<Task> newNode = new Node<Task>(oldTail, task, null);
-        tail = newNode;
+        customLinkedList.setTail(newNode);
         HistoryMap.put(task.getId(), newNode);
         if (oldTail == null) {
-            head = newNode;
+            customLinkedList.setHead(newNode);
         } else {
             oldTail.next = newNode;
         }
@@ -50,7 +51,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private List<Task> getTasks() {
         List<Task> HistoryList = new ArrayList<>();
-        Node<Task> node = head;
+        Node<Task> node = customLinkedList.getHead();
         while (node != null) {
             HistoryList.add(node.data);
             node = node.next;
@@ -62,17 +63,17 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (!(node == null)) {
             node.data = null;
 
-            if (head == node && tail == node) {
-                head = null;
-                tail = null;
+            if (customLinkedList.getHead() == node && customLinkedList.getTail() == node) {
+                customLinkedList.setHead(null);
+                customLinkedList.setTail(null);
 
-            } else if (head == node) {
-                head = node.next;
-                head.prev = null;
+            } else if (customLinkedList.getHead() == node) {
+                customLinkedList.setHead(node.next);
+                customLinkedList.getHead().prev = null;
 
-            } else if (tail == node) {
-                tail = node.prev;
-                tail.next = null;
+            } else if (customLinkedList.getTail() == node) {
+                customLinkedList.setTail(node.prev);
+                customLinkedList.getTail().next = null;
 
             } else {
                 node.prev.next = node.next;
