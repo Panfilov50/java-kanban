@@ -4,10 +4,12 @@ import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
 
+// Оставь надежду, всяк сюда входящий...
+
 public class Main {
     public static void main(String[] args) {
         Manager manager = Managers.getDefault();
- //создайте две задачи, эпик с тремя подзадачами и эпик без подзадач;
+        /* Ниже старые тесты
         Task task = new Task("Task1","Description1");
         manager.addTask(task);
         task = new Task("Task2", "Description2");
@@ -41,7 +43,6 @@ public class Main {
 
         System.out.println();
         System.out.println();
-//запросите созданные задачи несколько раз в разном порядке;
         manager.getTaskById(1);
         manager.getEpicTaskById(4);
         manager.getSubtaskById(5);
@@ -51,20 +52,58 @@ public class Main {
         manager.getTaskById(2);
         manager.getSubtaskById(5);
         manager.getTaskById(1);
-
-        System.out.println();
-        System.out.println();
-//после каждого запроса выведите историю и убедитесь, что в ней нет повторов;
         System.out.println(manager.getHistory());
         System.out.println();
         System.out.println();
-//удалите задачу, которая есть в истории, и проверьте, что при печати она не будет выводиться;
         manager.removeTask(1);
-//удалите эпик с тремя подзадачами и убедитесь, что из истории удалился как сам эпик, так и все его подзадачи.
         manager.removeTask(4);
+        */
 
-        System.out.println(manager.getHistory());
+        // Новые тесты
+        FileBackedTasksManager fileManager = new FileBackedTasksManager("resources\\Test.csv");
+        Task task1 = new Task("Task 1", "Description 1");
+        Task task2 = new Task("Task 2", "Description 2");
+        Task task3 = new Task("Task 3", "Description 3");
+        Task task4 = new Task("Task 4", "Description 4");
+        Task task5 = new Task("Task 5", "Description 5");
+        Epic epic1 = new Epic("Epic 1", "Description 1");
+        Epic epic2 = new Epic("Epic 2", "Description 2");
+        Epic epic3 = new Epic("Epic 3", "Description 3");
 
+        Subtask subtask1 = new Subtask("Subtask 1", "Description 1", "Epic 1");
+        Subtask subtask2 = new Subtask("Subtask 2", "Description 2", "Epic 1");
+        Subtask subtask3 = new Subtask("Subtask 3", "Description 3", "Epic 1");
+        Subtask subtask4 = new Subtask("Subtask 4", "Description 4", "Epic 2");
+        Subtask subtask5 = new Subtask("Subtask 5", "Description 5", "Epic 3");
+
+
+        fileManager.addTask(task1);
+        fileManager.addTask(task2);
+        fileManager.addTask(task3);
+        fileManager.addTask(task4);
+        fileManager.addTask(task5);
+        fileManager.addEpicTusk(epic1);
+        fileManager.addEpicTusk(epic2);
+        fileManager.addEpicTusk(epic3);
+        fileManager.addSubtask(subtask1);
+        fileManager.addSubtask(subtask2);
+        fileManager.addSubtask(subtask3);
+        fileManager.addSubtask(subtask4);
+        fileManager.addSubtask(subtask5);
+
+        System.out.println("Список задач");
+        fileManager.getTask();
+        System.out.println();
+        System.out.println("Список эпиков");
+        fileManager.getEpicTask();
+        System.out.println();
+        System.out.println("Печать задачи 3:");
+        System.out.println(fileManager.getTaskById(3));
+        fileManager.removeTask(3);
+        fileManager.changeStatusForNameTask("Task 1",Status.DONE);
+        System.out.println();
+        System.out.println("Список задач после удаления и обновления статуса");
+        fileManager.getAllTask();
 
 
 

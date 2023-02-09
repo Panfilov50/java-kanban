@@ -137,9 +137,6 @@ public class InMemoryTaskManager implements Manager {
 
         }
 
-    public void removeSubtasks (Subtask subtask) {
-
-    }
     @Override
     public void removeAllTask() {
             taskList.clear();
