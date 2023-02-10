@@ -10,7 +10,7 @@ import java.util.List;
 public class InMemoryTaskManager implements Manager {
         public static final HashMap<Integer, Task> taskList = new HashMap<>();
         public static final HashMap<Integer, Task> epicTaskList = new HashMap<>();
-        public static final HashMap<Integer, Task> subtaskList = new HashMap<>();
+        public static final HashMap<Integer, Subtask> subtaskList = new HashMap<>();
         public static final HashMap<Integer, ArrayList<Integer>> epicSubtaskList = new HashMap<>();
 
   HistoryManager historyManager = Managers.getDefaultHistory();
@@ -116,26 +116,24 @@ public class InMemoryTaskManager implements Manager {
             }
         }
     @Override
-    public void removeTask(int id) {
-        if (epicSubtaskList.containsKey(id)) {
-            for (int j : epicSubtaskList.get(id)) {
-                historyManager.removeHistoryTask(j);
-            }
-        }
+    public void removeTask(int id) {     // Полностью переработал этот метод. Что тут творилось до этого, это ужас =)
+        historyManager.removeHistoryTask(id);
+        if (taskList.containsKey(id)) {
             taskList.remove(id);
-            epicTaskList.remove(id);
-            epicSubtaskList.remove(id);
+        } else if (subtaskList.containsKey(id)){
+            epicSubtaskList.get(subtaskList.get(id).getIdEpic()).remove((Integer) id);
             subtaskList.remove(id);
-            historyManager.removeHistoryTask(id);
-            for (int i : epicSubtaskList.keySet()) {
-                if(epicSubtaskList.get(i).contains(id)) {
-                    historyManager.removeHistoryTask(i);
-                    epicSubtaskList.get(i).remove((Integer)id);
-                }
+        } else if (epicTaskList.containsKey(id)){
+            for (int i : epicSubtaskList.get(id)) {
+                historyManager.removeHistoryTask(i);
+                subtaskList.remove((Integer)i);
+
             }
-
-
+            epicSubtaskList.remove(id);
+            epicTaskList.remove(id);
         }
+
+    }
 
     @Override
     public void removeAllTask() {

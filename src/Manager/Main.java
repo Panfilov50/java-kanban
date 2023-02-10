@@ -4,6 +4,8 @@ import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
 
+import java.io.File;
+
 // Оставь надежду, всяк сюда входящий...
 
 public class Main {
@@ -99,12 +101,23 @@ public class Main {
         System.out.println();
         System.out.println("Печать задачи 3:");
         System.out.println(fileManager.getTaskById(3));
-        fileManager.removeTask(3);
+        fileManager.removeTask(6);
         fileManager.changeStatusForNameTask("Task 1",Status.DONE);
         System.out.println();
         System.out.println("Список задач после удаления и обновления статуса");
         fileManager.getAllTask();
 
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+
+        // Совсем забыл добавить бэкап! Спасибо! =)
+        File backup = new File("resources\\Backup.csv");
+
+        FileBackedTasksManager backupManager = FileBackedTasksManager.loadFromFile(backup);
+        System.out.println("Список задач восстановленных");
+        backupManager.getAllTask();
 
 
 
