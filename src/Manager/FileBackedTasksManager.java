@@ -70,28 +70,25 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
     @Override
     public Task getTaskById(int id){
-        super.getTaskById(id);
         save();
         return super.getTaskById(id);
     }
     @Override
     public Task getEpicTaskById(int id){
-        super.getEpicTaskById(id);
         save();
         return super.getEpicTaskById(id);
     }
     @Override
     public Task getSubtaskById(int id){
-        super.getSubtaskById(id);
         save();
         return super.getSubtaskById(id);
     }
     @Override
     public List<Task> getHistory(){
-        super.getHistory();
         save();
         return super.getHistory();
     }
+
 
     public void save() {
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileTasks.toFile()))) {
@@ -115,16 +112,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private String toString(Task task) {
-        String type = String.valueOf(TypeTasks.TASK);
-        if (task instanceof Epic) {
-            type = String.valueOf(TypeTasks.EPIC);
-        }
-        if (task instanceof Subtask) {
-            type = String.valueOf(TypeTasks.SUBTASK);
-        }
-        String epic = (task instanceof Subtask) ? String.valueOf(((Subtask) task).getIdEpic()) : "";
 
-        return task.getId() + "," + type + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + epic;
+            String type = String.valueOf(TypeTasks.TASK);
+            if (task instanceof Epic) {
+                type = String.valueOf(TypeTasks.EPIC);
+            }
+            if (task instanceof Subtask) {
+                type = String.valueOf(TypeTasks.SUBTASK);
+            }
+            String epic = (task instanceof Subtask) ? String.valueOf(((Subtask) task).getIdEpic()) : "";
+
+            return task.getId() + ","
+                    + type + ","
+                    + task.getName() + ","
+                    + task.getStatus() + ","
+                    + task.getDescription() + ","
+                    + epic;
+
     }
 
     public static String historyToString(HistoryManager manager) {
@@ -156,7 +160,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             status = Status.IN_PROGRESS;
         }
         String description = valueSplit[4];
-        int epic = (valueSplit.length == 6) ? Integer.parseInt(valueSplit[5]) : -1;
+        int epic = (valueSplit.length == 9) ? Integer.parseInt(valueSplit[8]) : -1;
         if (valueSplit[1].equals(TypeTasks.TASK.toString())) {
             return new Task(id, name, description,  status);
         } else if (valueSplit[1].equals(TypeTasks.EPIC.toString())) {
@@ -166,7 +170,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTasksManager loadFromFile(File file) { //yt обработаны исключения!!!
+    public static FileBackedTasksManager loadFromFile(File file) {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             FileBackedTasksManager fileTasksManager =
                     new FileBackedTasksManager("C:\\Users\\68034\\dev\\first-project\\java-kanban-main\\resources\\Test.csv");

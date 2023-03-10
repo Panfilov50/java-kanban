@@ -1,14 +1,16 @@
 package Tasks;
-import Manager.*;
+
+import Manager.Status;
+
+import java.time.LocalTime;
 
 public class Subtask extends Task {
+
+
     private String whoIsEpic;
     private int idEpic;
 
-    public Subtask(String name, String description, int idEpic) {
-        super(name, description);
-        this.idEpic = idEpic;
-    }
+
 
     public Subtask(int id, String name, String description, Status status, int idEpic) {
         super(id, name, description, status);
@@ -20,7 +22,10 @@ public class Subtask extends Task {
         this.whoIsEpic = whoIsEpic;
     }
 
-
+    public Subtask(String name, String description, LocalTime timeStart, long duration, String whoIsEpic) {
+        super(name, description, timeStart, duration);
+        this.whoIsEpic = whoIsEpic;
+    }
 
     public String getWhoIsEpic() {
 
@@ -33,6 +38,7 @@ public class Subtask extends Task {
     }
 
     public int getIdEpic() {
+
         return idEpic;
     }
 
@@ -40,17 +46,21 @@ public class Subtask extends Task {
 
         this.idEpic = idEpic;
     }
-
     @Override
     public String toString() {
-        return "Подзадача: " +
+        return "Subtask{" +
                 "id=" + id +
-                ", Имя='" + name + '\'' +
-                ", Описание='" + description + '\'' +
-                "whoIsEpic='" + whoIsEpic + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", timeStart=" + timeStart +
+                ", duration=" + duration +
+                ", endTime=" + endTime +
+                ", whoIsEpic='" + whoIsEpic + '\'' +
                 ", idEpic=" + idEpic +
-                ", status=" + status;
+                '}'+"\n";
     }
+
 }
 
 
