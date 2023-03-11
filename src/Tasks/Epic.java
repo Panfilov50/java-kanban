@@ -1,7 +1,7 @@
 package Tasks;
-import Manager.*;
 
-import java.time.Duration;
+import Manager.Status;
+
 import java.time.LocalTime;
 
 public class Epic extends Task {

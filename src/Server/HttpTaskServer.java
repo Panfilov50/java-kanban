@@ -32,7 +32,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class HttpTaskServer {
 
-    private static final int PORT = 8090;
+    private static final int PORT = 8080;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private final HttpServer httpServer;
     private final Manager manager;
@@ -91,6 +91,7 @@ public class HttpTaskServer {
         private void handleGET(HttpExchange exchange) throws IOException {
             String url = exchange.getRequestURI().toString();
             String[] urlSplit = url.split("/");
+            String classTask = urlSplit[2];
 
             if (urlSplit.length < 3) {
                 System.out.println("\n/tasks/");
@@ -100,7 +101,7 @@ public class HttpTaskServer {
                 return;
             }
 
-            switch (urlSplit[2]) {
+            switch (classTask) {
                 case "task":
                     if (hasID(exchange)) {
                         System.out.println("\n/tasks/task/?id=" + getID(exchange));
@@ -156,8 +157,8 @@ public class HttpTaskServer {
 
             String url = exchange.getRequestURI().toString();
             String[] splitURL = url.split("/");
-
-            switch (splitURL[2]) {
+            String classTask = splitURL[2];
+            switch (classTask) {
                 case "task":
                     System.out.println("\n/tasks/task/");
                     Task task = gson.fromJson(body, Task.class);
@@ -184,7 +185,7 @@ public class HttpTaskServer {
         private void handleDELETE(HttpExchange exchange) throws IOException {
             String url = exchange.getRequestURI().toString();
             String[] splitURL = url.split("/");
-
+            String classTask = splitURL[2];
             if (splitURL.length == 2) {
                 System.out.println("/tasks/");
                 manager.removeAllTask();
@@ -194,7 +195,7 @@ public class HttpTaskServer {
 
             if (hasID(exchange)) {
                 int id = getID(exchange);
-                switch (splitURL[2]) {
+                switch (classTask) {
                     case "task":
                         System.out.println("/tasks/task/&id=" + id);
                         manager.removeTask(id);
@@ -212,7 +213,7 @@ public class HttpTaskServer {
                         break;
                 }
             } else {
-                switch (splitURL[2]) {
+                switch (classTask) {
                     case "task":
                         System.out.println("/tasks/task/");
                         manager.getTasks().clear();
